@@ -1,0 +1,6 @@
+.venv/
+model_cache/
+frontend/node_modules/
+__pycache__/
+frontend/build/
+frontend/build/static/

@@ -1,6 +1,11 @@
-fastapi
-uvicorn[standard]
-transformers[torch]
-torch
-pytest
-httpx
+flask == 2.3.3
+flask-cors == 4.0.0
+transformers == 4.35.0
+torch == 2.0.1
+sentencepiece == 0.1.99
+sacremoses == 0.0.53
+protobuf == 4.24.4
+numpy == 1.24.3
+tokenizers == 0.14.1
+pytest == 7.2.2
+gunicorn == 21.2.0
