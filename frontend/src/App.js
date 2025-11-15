@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Grid, TextField, Paper, Typography, Button } from '@mui/material';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = window.location.origin;
 
 function App() {
   const [inputText, setInputText] = useState('');

@@ -11,7 +11,17 @@ from .translator import get_translator
 # Configure static files handling
 static_folder = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
 app = Flask(__name__, static_folder=None)  # We'll handle static files manually
-CORS(app)
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "https://translator-api-843246270197.us-central1.run.app",
+            "http://localhost:3000",
+            "http://localhost:5000"
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 @app.before_request
 def log_request_info():
@@ -51,8 +61,10 @@ def serve_frontend(path):
         app.logger.error(f"Error serving file: {str(e)}")
         return send_from_directory(static_folder, 'index.html')
 
+@app.route('/_ah/health', methods=['GET'])
 @app.route('/health', methods=['GET'])
 def health():
+    """Health check endpoint for Cloud Run"""
     return jsonify({"status": "healthy"}), HTTPStatus.OK
 
 @app.route('/translate', methods=['POST'])
@@ -72,4 +84,6 @@ def translate():
     return jsonify({"translation": out}), HTTPStatus.OK
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Cloud Run will set PORT environment variable
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port)

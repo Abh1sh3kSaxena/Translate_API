@@ -48,6 +48,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
+
+# Expose port 8080 for Cloud Run
+EXPOSE 8080
 COPY app ./app
 COPY --from=frontend-builder /app/frontend/build/* ./static/
 COPY --from=builder /app/model ./model
@@ -63,5 +66,5 @@ ENV FLASK_ENV=production
 RUN find . -type d -name "__pycache__" -exec rm -r {} + && \
     find . -type f -name "*.pyc" -delete
 
-EXPOSE 5000
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
+# Start the application
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port", "8080"]
